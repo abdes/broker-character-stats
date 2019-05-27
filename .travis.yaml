@@ -1,5 +1,4 @@
-sudo: false
-language: c
+language: generic
 
 addons:
   apt:
