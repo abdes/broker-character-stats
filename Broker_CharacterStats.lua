@@ -97,7 +97,7 @@ local Classes = {
 			-- Elemental
 			[1] = { type = "caster", stats = {"Intellect", "Versatility", "Crit", "Haste", "Mastery"}},
 			-- Enhancement
-			[2] = { type = "melee", stats = {"Haste", "Crit", "Mastery", "Versatility"}},
+			[2] = { type = "melee", stats = {"Haste", "Crit", "Mastery", "Versatility", "Agility"}},
 			-- Restoration
 			[3] = { type = "caster", stats = {"Intellect", "Crit", "Versatility", "Haste", "Mastery", "--", "MP5"}},
 		}
