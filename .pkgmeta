@@ -1,0 +1,12 @@
+package-as: Broker_CharacterStats
+wowi-archive-previous: no
+enable-nolib-creation: no
+
+externals:
+    libs/LibStub: https://repos.wowace.com/wow/libstub
+    libs/CallbackHandler-1.0: https://repos.wowace.com/wow/callbackhandler
+    libs/LibDataBroker-1.1: https://repos.wowace.com/wow/libdatabroker-1-1
+
+ignore:
+  - .travis.yml
+  - README.md

@@ -159,7 +159,7 @@ local Classes = {
 			-- Havoc
 			[1] = { type = "melee", stats = {"Versatility", "Crit", "Haste", "Agility", "Mastery"}},
 			-- Vengeance
-			[2] = { type = "melee", stats = {"Agility", "Haste", "Versatility", "Mastery", "Crit"}},
+			[2] = { type = "melee", stats = {"Agility", "Haste", "Versatility", "Mastery", "Crit", "--", "Dodge"}},
 		}
   }
 }

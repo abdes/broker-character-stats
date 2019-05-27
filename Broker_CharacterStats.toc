@@ -1,9 +1,16 @@
 ## Interface: 80100
+
 ## Title: Broker_CharacterStats
-## Version: 2019.05.25
-## Author: Clicko-Draenor (EU)
 ## Notes: LDB plugin to display selected character stats where you want.
-libs\LibStub.lua
-libs\CallbackHandler-1.0.lua
-libs\LibDataBroker-1.1.lua
+## Author: Clicko-Draenor (EU)
+## Version: @project-version@
+
+## X-Category: Plugins - Data Broker
+## X-License: BSD License
+## X-Website: https://github.com/abdes/broker-character-stats
+## X-Curse-Project-ID: 322614
+## X-WoWI-ID: 24960
+
+## OptionalDeps: LibStub, CallbackHandler-1.0, LibDataBroker-1.1
+
 Broker_CharacterStats.lua
