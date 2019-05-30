@@ -11,6 +11,17 @@
 ## X-Curse-Project-ID: 322614
 ## X-WoWI-ID: 24960
 
-## OptionalDeps: LibStub, CallbackHandler-1.0, LibDataBroker-1.1
+# Note you should only list the libraries your addon uses directly. So, you wouldn't
+# list LibStub or CallbackHandler-1.0 if the addon start using another library that
+# embeds them (e.g. Ace-3), since the standalone versions of the libraries you would
+# list either embed them or list them as their own dependencies.
+
+## OptionalDeps: LibStub, CallbackHandler-1.0
+
+#@no-lib-strip@
+libs\LibStub\LibStub.lua
+libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+#@end-no-lib-strip@
+libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
 
 Broker_CharacterStats.lua
