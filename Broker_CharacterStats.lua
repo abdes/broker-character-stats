@@ -1,25 +1,23 @@
--- Constants used inside the addon
-local CLASS_NONE = 0
-local CLASS_WARRIOR = 1
-local CLASS_PALADIN = 2
-local CLASS_HUNTER = 3
-local CLASS_ROGUE = 4
-local CLASS_PRIEST = 5
-local CLASS_DEATHKNIGHT = 6
-local CLASS_SHAMAN = 7
-local CLASS_MAGE = 8
-local CLASS_WARLOCK = 9
-local CLASS_MONK = 10
-local CLASS_DRUID = 11
-local CLASS_DEMON_HUNTER = 12
+----------------------------------------------------------------------------------
+--- Broker Character Stats
+--- The addon's main lua code.
+----------------------------------------------------------------------------------
+--- Copyright 2019 Abdessattar Sassi (oss.abde.sassi at gmail.com)
+---
+--- Distributed under the 3-Clause BSD License.(See accompanying file LICENSE or
+--- copy at https://opensource.org/licenses/BSD-3-Clause)
+----------------------------------------------------------------------------------
 
+-- All addon's .lua files are passed the addon name and a table they all share to use a common namespace.
+-- It's common for addons to use this namespace to group functions or variables to use across its various files.
+local addonName = ...
 
 -- Table of classes, their spec and the stats by spec
 -- All classes and specs get Leech and Avoidance
 local Classes = {
-  -- https://wowwiki.fandom.com/wiki/API_UnitClass
-  -- Warrior
-  [1] = {
+	-- https://wowwiki.fandom.com/wiki/API_UnitClass
+	-- Warrior
+	[1] = {
 		defaultSpec = 1,
 		specs = {
 			-- Arms
@@ -29,9 +27,9 @@ local Classes = {
 			-- Protection
 			[3] = { type = "melee", stats = {"Haste", "Versatility", "Mastery", "Crit", "Strength", "Armor", "--", "Block", "Parry"}},
 		}
-  },
-  -- Paladin
-  [2] = {
+	},
+	-- Paladin
+	[2] = {
 		defaultSpec = 3,
 		specs = {
 			-- Holy
@@ -41,9 +39,9 @@ local Classes = {
 			-- Retribution
 			[3] = { type = "melee", stats = {"Strength", "Haste", "Crit", "Mastery", "Versatility"}},
 		}
-  },
-  -- Hunter
-  [3] = {
+	},
+	-- Hunter
+	[3] = {
 		defaultSpec = 1,
 		specs = {
 			-- BM
@@ -53,9 +51,9 @@ local Classes = {
 			-- Survival
 			[3] = { type = "melee", stats = {"Agility", "Haste", "Crit", "Versatility", "Mastery"}},
 		}
-  },
-  -- Rogue
-  [4] = {
+	},
+	-- Rogue
+	[4] = {
 		defaultSpec = 1,
 		specs = {
 			-- Assassination
@@ -65,9 +63,9 @@ local Classes = {
 			-- Subtlety
 			[3] = { type = "melee", stats = {"Agility", "Versatility", "Crit", "Mastery", "Haste"}},
 		}
-  },
-  -- Priest
-  [5] = {
+	},
+	-- Priest
+	[5] = {
 		defaultSpec = 1,
 		specs = {
 			-- Discipline
@@ -77,9 +75,9 @@ local Classes = {
 			-- Shadow
 			[3] = { type = "caster", stats = {"Haste", "Crit", "Versatility", "Mastery", "Intellect"}},
 		}
-  },
-  -- DeathKnight
-  [6] = {
+	},
+	-- DeathKnight
+	[6] = {
 		defaultSpec = 3,
 		specs = {
 			-- Blood
@@ -89,9 +87,9 @@ local Classes = {
 			-- Unholy
 			[3] = { type = "melee", stats = {"Strength", "Haste", "Crit", "Versatility", "Mastery"}},
 		}
-  },
-  -- Shaman
-  [7] = {
+	},
+	-- Shaman
+	[7] = {
 		defaultSpec = 1,
 		specs = {
 			-- Elemental
@@ -101,9 +99,9 @@ local Classes = {
 			-- Restoration
 			[3] = { type = "caster", stats = {"Intellect", "Crit", "Versatility", "Haste", "Mastery", "--", "MP5"}},
 		}
-  },
-  -- Mage
-  [8] = {
+	},
+	-- Mage
+	[8] = {
 		defaultSpec = 3,
 		specs = {
 			-- Arcane
@@ -113,9 +111,9 @@ local Classes = {
 			-- Frost
 			[3] = { type = "caster", stats = {"Intellect", "Crit", "Haste", "Versatility", "Mastery"}},
 		}
-  },
-  -- Warlock
-  [9] = {
+	},
+	-- Warlock
+	[9] = {
 		defaultSpec = 1,
 		specs = {
 			-- Affliction
@@ -125,9 +123,9 @@ local Classes = {
 			-- Destruction
 			[3] = { type = "caster", stats = {"Mastery", "Haste", "Crit", "Intellect", "Versatility"}},
 		}
-  },
-  -- Monk
-  [10] = {
+	},
+	-- Monk
+	[10] = {
 		defaultSpec = 3,
 		specs = {
 			-- Brewmaster
@@ -137,9 +135,9 @@ local Classes = {
 			-- Windwalker
 			[3] = { type = "melee", stats = {"Agility", "Versatility", "Mastery", "Crit", "Haste"}},
 		}
-  },
-  -- Druid
-  [11] = {
+	},
+	-- Druid
+	[11] = {
 		defaultSpec = 2,
 		specs = {
 			-- Balance
@@ -151,9 +149,9 @@ local Classes = {
 			-- Restoration
 			[4] = { type = "caster", stats = {"Mastery", "Haste", "Versatility", "Crit", "Intellect", "--", "MP5"}},
 		}
-  },
-  -- Demon Hunter
-  [12] = {
+	},
+	-- Demon Hunter
+	[12] = {
 		defaultSpec = 1,
 		specs = {
 			-- Havoc
@@ -161,28 +159,30 @@ local Classes = {
 			-- Vengeance
 			[2] = { type = "melee", stats = {"Agility", "Haste", "Versatility", "Mastery", "Crit", "--", "Dodge"}},
 		}
-  }
+	}
 }
 
 -- Load Libraries
 local ldb = LibStub:GetLibrary("LibDataBroker-1.1")
 
 -- Main addon object
+--@type CharacterStats
 local CharacterStats = {
-	addonName = "CharacterStats",
-  addonColor = "EE2200",
+	addonName = addonName,
+	versionString = GetAddOnMetadata(addonName, "Version");
+	addonColor = "EE2200",
 }
 function CharacterStats.print(message)
-  print('|c00'..CharacterStats.addonColor..'['..CharacterStats.addonName..']|r ' .. message)
+	print('|c00'..CharacterStats.addonColor..'['..CharacterStats.addonName..' v'..CharacterStats.versionString..']|r ' .. message)
 end
 
 CharacterStats.dataObject = ldb:NewDataObject(
-"Character Stats", {
-	type = "data source",
-	label = "Stats",
-	text = "",
-	icon = ""
-})
+		"Character Stats", {
+			type = "data source",
+			label = "Stats",
+			text = "",
+			icon = ""
+		})
 
 -- Unit class and spec
 CharacterStats.unitClassIndex = nil
@@ -190,7 +190,7 @@ CharacterStats.unitSpecIndex = nil
 -- Event listener on PLAYER_SPECIALIZATION_CHANGED and update the spec index
 CharacterStats.listeners = {
 	["PLAYER_SPECIALIZATION_CHANGED"] = function(unitID)
-  	if unitID ~= 'player' then return end
+		if unitID ~= 'player' then return end
 		CharacterStats.unitSpecIndex = GetSpecialization()
 		CharacterStats.print("new spec ("..CharacterStats.unitSpecIndex..")")
 	end,
@@ -218,33 +218,33 @@ end
 -- All supported stats
 local StatsUpdateFunctions = {
 	["Strength"] = function(class, spec)
-    local base, stat, posBuff, negBuff = UnitStat("player", 1);
-    return stat end,
+		local base, stat, posBuff, negBuff = UnitStat("player", 1);
+		return stat end,
 
-  ["Agility"] = function(class, spec)
-    local base, stat, posBuff, negBuff = UnitStat("player", 2);
-    return stat end,
+	["Agility"] = function(class, spec)
+		local base, stat, posBuff, negBuff = UnitStat("player", 2);
+		return stat end,
 
-  ["Stamina"] = function(class, spec)
-    local base, stat, posBuff, negBuff = UnitStat("player", 3);
-    return stat end,
+	["Stamina"] = function(class, spec)
+		local base, stat, posBuff, negBuff = UnitStat("player", 3);
+		return stat end,
 
-  ["Intellect"] = function(class, spec)
-    local base, stat, posBuff, negBuff = UnitStat("player", 4);
-    return stat end,
+	["Intellect"] = function(class, spec)
+		local base, stat, posBuff, negBuff = UnitStat("player", 4);
+		return stat end,
 
-  ["Spirit"] = function(class, spec)
-    local base, stat, posBuff, negBuff = UnitStat("player", 5);
-    return stat end,
+	["Spirit"] = function(class, spec)
+		local base, stat, posBuff, negBuff = UnitStat("player", 5);
+		return stat end,
 
-  ["MP5"] = function(class, spec)
+	["MP5"] = function(class, spec)
 		local base, casting = GetManaRegen()
 		return string.format("%.0f", casting * 5) end,
 
 	-- Offense
-  ["Attack Power"] = function(class, spec)
-    local base, posBuff, negBuff = UnitAttackPower("player")
-    return (base + posBuff + negBuff) end,
+	["Attack Power"] = function(class, spec)
+		local base, posBuff, negBuff = UnitAttackPower("player")
+		return (base + posBuff + negBuff) end,
 
 	-- Defense
 	["Dodge"] = function(class, spec)
@@ -273,12 +273,12 @@ local StatsUpdateFunctions = {
 			value = GetRangedCritChance()
 		elseif is_spellCaster(class, spec) then
 			local holySchool = 2;
-	    local minCrit = GetSpellCritChance(holySchool);
-	    local spellCrit;
-	    for i=(holySchool+1), 7 do
-	        spellCrit = GetSpellCritChance(i);
-	        minCrit = min(minCrit, spellCrit);
-	    end
+			local minCrit = GetSpellCritChance(holySchool);
+			local spellCrit;
+			for i=(holySchool+1), 7 do
+				spellCrit = GetSpellCritChance(i);
+				minCrit = min(minCrit, spellCrit);
+			end
 			value = minCrit
 		end
 		return string.format("%.2f%%", value) end,
@@ -325,7 +325,7 @@ CharacterStats_Frame:SetScript("OnEvent", function(self, event, ...)
 	CharacterStats.listeners[event](...)
 end)
 for k, v in pairs(CharacterStats.listeners) do
- CharacterStats_Frame:RegisterEvent(k); -- Register all events for which handlers have been defined
+	CharacterStats_Frame:RegisterEvent(k); -- Register all events for which handlers have been defined
 end
 
 
